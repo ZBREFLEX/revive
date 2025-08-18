@@ -26,7 +26,7 @@ export default function ProductDetail() {
     },
   }
 
-  // Product data (in a real app, this would come from an API or database)
+  // Product data with Indian Rupee pricing
   const products = {
     "rtx-4090-beast": {
       name: "RTX 4090 Beast",
@@ -46,8 +46,10 @@ export default function ProductDetail() {
         "RGB Lighting",
         "Tempered Glass Side Panel",
       ],
-      price: "$3,999",
-      originalPrice: "$4,299",
+      price: "₹3,32,000",
+      originalPrice: "₹3,57,000",
+      priceNumeric: 332000,
+      originalPriceNumeric: 357000,
       rating: 4.9,
       reviews: 127,
       inStock: true,
@@ -72,8 +74,10 @@ export default function ProductDetail() {
         "RGB Lighting",
         "Mesh Front Panel",
       ],
-      price: "$2,799",
-      originalPrice: "$2,999",
+      price: "₹2,32,000",
+      originalPrice: "₹2,49,000",
+      priceNumeric: 232000,
+      originalPriceNumeric: 249000,
       rating: 4.8,
       reviews: 89,
       inStock: true,
@@ -98,8 +102,10 @@ export default function ProductDetail() {
         "Multiple Connectivity Options",
         "Low Blue Light Technology",
       ],
-      price: "$599",
-      originalPrice: "$699",
+      price: "₹49,900",
+      originalPrice: "₹58,000",
+      priceNumeric: 49900,
+      originalPriceNumeric: 58000,
       rating: 4.7,
       reviews: 203,
       inStock: true,
@@ -124,8 +130,10 @@ export default function ProductDetail() {
         "Eye Saver Mode",
         "Flicker Free Technology",
       ],
-      price: "$899",
-      originalPrice: "$1,099",
+      price: "₹74,900",
+      originalPrice: "₹91,500",
+      priceNumeric: 74900,
+      originalPriceNumeric: 91500,
       rating: 4.6,
       reviews: 156,
       inStock: true,
@@ -150,8 +158,10 @@ export default function ProductDetail() {
         "50-hour Battery Life",
         "Detachable Cable",
       ],
-      price: "$199",
-      originalPrice: "$249",
+      price: "₹16,500",
+      originalPrice: "₹20,700",
+      priceNumeric: 16500,
+      originalPriceNumeric: 20700,
       rating: 4.5,
       reviews: 342,
       inStock: true,
@@ -176,8 +186,10 @@ export default function ProductDetail() {
         "Steel Headband",
         "Multi-platform Compatible",
       ],
-      price: "$299",
-      originalPrice: "$349",
+      price: "₹24,900",
+      originalPrice: "₹29,000",
+      priceNumeric: 24900,
+      originalPriceNumeric: 29000,
       rating: 4.8,
       reviews: 278,
       inStock: true,
@@ -205,15 +217,12 @@ export default function ProductDetail() {
     )
   }
 
-  // Fixed WhatsApp API configuration
-  const whatsappNumber = "+91 89210 06610" // Replace with your actual WhatsApp number (include country code)
+  // Fixed WhatsApp API configuration for India
+  const whatsappNumber = "+91 89210 06610" // Replace with your actual Indian WhatsApp number
   const whatsappMessage = `Hi! I'm interested in the ${product.name} (${product.price}). Can you provide more details about availability and purchase options?`
 
   // Proper WhatsApp URL format
   const whatsappLink = `https://api.whatsapp.com/send?phone=${whatsappNumber.replace("+", "")}&text=${encodeURIComponent(whatsappMessage)}`
-
-  // Alternative WhatsApp link format (you can use either one)
-  // const whatsappLink = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${encodeURIComponent(whatsappMessage)}`
 
   const instagramLink = "https://linktr.ee/revivetechlounge?fbclid=PAQ0xDSwL9dwJleHRuA2FlbQIxMQABp2-M0zDYgUO4yXipOBo13sHYsYXLDTvGF2thMfEUbPaJZZognsaDUcxErhtO_aem_7X6wEi9Adx_A5J8yYM6Kbg"
 
@@ -227,6 +236,24 @@ export default function ProductDetail() {
       navigator.clipboard.writeText(`${whatsappMessage}\n\nContact: ${whatsappNumber}`)
       alert("WhatsApp link copied to clipboard!")
     }
+  }
+
+  // Function to format Indian currency
+  const formatIndianCurrency = (amount) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount)
+  }
+
+  // Calculate savings
+  const calculateSavings = () => {
+    if (product.originalPriceNumeric && product.priceNumeric) {
+      return product.originalPriceNumeric - product.priceNumeric
+    }
+    return 0
   }
 
   const renderStars = (rating) => {
@@ -290,7 +317,7 @@ export default function ProductDetail() {
               className="bg-yellow-400 text-black hover:bg-yellow-300 rounded-full px-6 py-2 text-sm font-semibold"
               onClick={() => window.open(instagramLink, "_blank")}
             >
-              Book Now
+              Enquire Now
             </Button>
           </div>
           <div className="md:hidden">
@@ -390,11 +417,9 @@ export default function ProductDetail() {
                   {product.originalPrice && (
                     <div className="text-xl text-gray-500 line-through">{product.originalPrice}</div>
                   )}
-                  {product.originalPrice && (
+                  {product.originalPriceNumeric && product.priceNumeric && (
                     <div className="bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
-                      SAVE $
-                      {Number.parseInt(product.originalPrice.replace("$", "").replace(",", "")) -
-                        Number.parseInt(product.price.replace("$", "").replace(",", ""))}
+                      SAVE {formatIndianCurrency(calculateSavings())}
                     </div>
                   )}
                 </div>
@@ -547,7 +572,7 @@ export default function ProductDetail() {
                   className="bg-yellow-400 text-black hover:bg-yellow-300 text-xl px-12 py-6"
                   onClick={handleWhatsAppClick}
                 >
-                  Buy Now <ShoppingCart className="ml-2" />
+                Enquire Now <ShoppingCart className="ml-2" />
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
