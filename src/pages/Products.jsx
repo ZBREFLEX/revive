@@ -12,7 +12,7 @@ import MobileNav from "@/components/ui/mobile-nav" // Import MobileNav
 
 
 //import local images
-import image1 from "../assets/image1.jpg";
+
 //end of images
 export default function Products() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) // State for mobile menu
